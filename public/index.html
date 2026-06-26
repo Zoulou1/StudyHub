@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StudyHub - Quiz Platform</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>📚 StudyHub</h1>
+      <p>Test your knowledge with our interactive quizzes</p>
+    </header>
+
+    <!-- Quiz Selection Screen -->
+    <div id="quizSelection" class="screen active">
+      <h2>Available Quizzes</h2>
+      <div id="quizList" class="quiz-list"></div>
+    </div>
+
+    <!-- Quiz Taking Screen -->
+    <div id="quizScreen" class="screen">
+      <div class="quiz-header">
+        <h2 id="quizTitle"></h2>
+        <p id="progressText"></p>
+      </div>
+      <div id="questionsContainer"></div>
+      <button id="submitBtn" class="btn btn-primary">Submit Quiz</button>
+      <button id="backBtn" class="btn btn-secondary">Back to Quizzes</button>
+    </div>
+
+    <!-- Results Screen -->
+    <div id="resultsScreen" class="screen">
+      <h2>Quiz Results</h2>
+      <div class="score-card">
+        <div class="score-circle">
+          <span id="scorePercentage">0%</span>
+        </div>
+        <p id="scoreText"></p>
+      </div>
+      <div id="detailedResults"></div>
+      <button id="retakeBtn" class="btn btn-primary">Retake Quiz</button>
+      <button id="backToListBtn" class="btn btn-secondary">Back to Quizzes</button>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

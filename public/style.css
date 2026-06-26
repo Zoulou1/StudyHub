@@ -1,0 +1,270 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.container {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  max-width: 700px;
+  width: 100%;
+  padding: 40px;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+header h1 {
+  color: #667eea;
+  font-size: 2.5em;
+  margin-bottom: 10px;
+}
+
+header p {
+  color: #666;
+  font-size: 1.1em;
+}
+
+.screen {
+  display: none;
+}
+
+.screen.active {
+  display: block;
+}
+
+h2 {
+  color: #333;
+  margin-bottom: 25px;
+  font-size: 1.8em;
+}
+
+/* Quiz Selection */
+.quiz-list {
+  display: grid;
+  gap: 15px;
+}
+
+.quiz-card {
+  background: #f8f9fa;
+  border: 2px solid #e9ecef;
+  border-radius: 8px;
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.quiz-card:hover {
+  border-color: #667eea;
+  background: #f0f3ff;
+  transform: translateY(-2px);
+}
+
+.quiz-card h3 {
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.quiz-card p {
+  color: #666;
+  font-size: 0.95em;
+}
+
+/* Quiz Taking */
+.quiz-header {
+  margin-bottom: 30px;
+}
+
+#progressText {
+  color: #999;
+  font-size: 0.95em;
+  margin-top: 10px;
+}
+
+.question-block {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 25px;
+  margin-bottom: 25px;
+}
+
+.question-block h4 {
+  color: #333;
+  margin-bottom: 15px;
+  font-size: 1.1em;
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.option {
+  background: white;
+  border: 2px solid #e9ecef;
+  border-radius: 6px;
+  padding: 12px 15px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 1em;
+}
+
+.option:hover {
+  border-color: #667eea;
+  background: #f0f3ff;
+}
+
+.option input[type="radio"] {
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.option input[type="radio"]:checked + label {
+  color: #667eea;
+  font-weight: 600;
+}
+
+label {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+/* Results */
+.score-card {
+  text-align: center;
+  margin: 30px 0;
+}
+
+.score-circle {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  box-shadow: 0 5px 20px rgba(102, 126, 234, 0.3);
+}
+
+.score-circle span {
+  color: white;
+  font-size: 3em;
+  font-weight: bold;
+}
+
+#scoreText {
+  color: #333;
+  font-size: 1.2em;
+  margin-bottom: 30px;
+}
+
+.detailed-results {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 25px;
+}
+
+.result-item {
+  background: white;
+  border-left: 4px solid #e9ecef;
+  padding: 15px;
+  margin-bottom: 12px;
+  border-radius: 4px;
+}
+
+.result-item.correct {
+  border-left-color: #28a745;
+}
+
+.result-item.incorrect {
+  border-left-color: #dc3545;
+}
+
+.result-item p {
+  margin: 5px 0;
+  color: #333;
+}
+
+.result-item .label {
+  font-weight: 600;
+  color: #666;
+}
+
+/* Buttons */
+.btn {
+  padding: 12px 30px;
+  border: none;
+  border-radius: 6px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  margin-right: 10px;
+  margin-top: 10px;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 20px rgba(102, 126, 234, 0.3);
+}
+
+.btn-secondary {
+  background: #e9ecef;
+  color: #333;
+}
+
+.btn-secondary:hover {
+  background: #dee2e6;
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .container {
+    padding: 20px;
+  }
+
+  header h1 {
+    font-size: 1.8em;
+  }
+
+  h2 {
+    font-size: 1.4em;
+  }
+
+  .question-block {
+    padding: 15px;
+  }
+
+  .btn {
+    width: 100%;
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+}
