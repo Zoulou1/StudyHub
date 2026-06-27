@@ -60,6 +60,30 @@ const quizzes = [
         correctAnswer: 1
       }
     ]
+  },
+  {
+    id: 3,
+    title: 'Basic Science Quiz',
+    questions: [
+      {
+        id: 1,
+        question: 'What planet is closest to the Sun?',
+        options: ['Venus', 'Earth', 'Mercury', 'Mars'],
+        correctAnswer: 2
+      },
+      {
+        id: 2,
+        question: 'What gas do plants absorb from the air?',
+        options: ['Oxygen', 'Carbon Dioxide', 'Nitrogen', 'Hydrogen'],
+        correctAnswer: 1
+      },
+      {
+        id: 3,
+        question: 'How many bones are in the human body?',
+        options: ['196', '206', '216', '226'],
+        correctAnswer: 1
+      }
+    ]
   }
 ];
 
