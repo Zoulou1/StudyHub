@@ -171,13 +171,6 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 For issues, questions, or suggestions, please open an issue on GitHub or contact the development team.
 
-## Team Members
-
-| Name | GitHub | Role |
-|------|--------|------|
-| Ewing Singasara | [@Zoulou1](https://github.com/Zoulou1) | Backend & Frontend setup |
-| Tonny Lee Muvunyi | [@TonnyleeM](https://github.com/TonnyleeM) | Quiz content & Documentation |
-
 ---
 
 **Happy Learning! 🎓**
