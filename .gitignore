@@ -9,6 +9,7 @@ yarn.lock
 .env
 .env.local
 .env.*.local
+config.local.yml
 
 # IDE and Editor
 .vscode/

@@ -1,7 +1,7 @@
 {
   "name": "studyhub",
   "version": "1.0.0",
-  "description": "A simple quiz platform for African students to test their knowledge",
+  "description": "Interactive learning platform for African students to test knowledge across programming, DevOps, and general topics",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -9,10 +9,12 @@
   },
   "keywords": [
     "education",
+    "learning",
     "quiz",
-    "learning"
+    "devops",
+    "programming"
   ],
-  "author": "",
+  "author": "Ewing SINGA",
   "license": "MIT",
   "dependencies": {
     "express": "^4.18.2",

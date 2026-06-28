@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>StudyHub - Quiz Platform</title>
+  <title>StudyHub - Learning Platform</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="container">
     <header>
-      <h1>📚 StudyHub</h1>
-      <p>Test your knowledge with our interactive quizzes</p>
+      <h1>StudyHub</h1>
+      <p>Test your knowledge on DevOps, Programming, and African Development</p>
     </header>
 
     <!-- Quiz Selection Screen -->
@@ -24,15 +24,20 @@
       <div class="quiz-header">
         <h2 id="quizTitle"></h2>
         <p id="progressText"></p>
+        <div class="progress-bar">
+          <div id="progressFill" class="progress-fill"></div>
+        </div>
       </div>
       <div id="questionsContainer"></div>
-      <button id="submitBtn" class="btn btn-primary">Submit Quiz</button>
-      <button id="backBtn" class="btn btn-secondary">Back to Quizzes</button>
+      <div class="button-group">
+        <button id="submitBtn" class="btn btn-primary">Submit Quiz</button>
+        <button id="backBtn" class="btn btn-secondary">Back</button>
+      </div>
     </div>
 
     <!-- Results Screen -->
     <div id="resultsScreen" class="screen">
-      <h2>Quiz Results</h2>
+      <h2>Your Results</h2>
       <div class="score-card">
         <div class="score-circle">
           <span id="scorePercentage">0%</span>
@@ -40,9 +45,15 @@
         <p id="scoreText"></p>
       </div>
       <div id="detailedResults"></div>
-      <button id="retakeBtn" class="btn btn-primary">Retake Quiz</button>
-      <button id="backToListBtn" class="btn btn-secondary">Back to Quizzes</button>
+      <div class="button-group">
+        <button id="retakeBtn" class="btn btn-primary">Retake Quiz</button>
+        <button id="backToListBtn" class="btn btn-secondary">Back to Quizzes</button>
+      </div>
     </div>
+
+    <footer>
+      <p>&copy; 2026 StudyHub. Created for African learners.</p>
+    </footer>
   </div>
 
   <script src="app.js"></script>

@@ -1,8 +1,6 @@
-// Global state
 let currentQuiz = null;
 let currentAnswers = {};
 
-// DOM Elements
 const quizSelectionScreen = document.getElementById('quizSelection');
 const quizScreen = document.getElementById('quizScreen');
 const resultsScreen = document.getElementById('resultsScreen');
@@ -13,12 +11,10 @@ const backBtn = document.getElementById('backBtn');
 const retakeBtn = document.getElementById('retakeBtn');
 const backToListBtn = document.getElementById('backToListBtn');
 
-// Initialize app
 document.addEventListener('DOMContentLoaded', () => {
   loadQuizzes();
 });
 
-// Load all available quizzes
 async function loadQuizzes() {
   try {
     const response = await fetch('/api/quizzes');
@@ -30,28 +26,26 @@ async function loadQuizzes() {
       card.className = 'quiz-card';
       card.innerHTML = `
         <h3>${quiz.title}</h3>
-        <p>${quiz.questionCount} questions</p>
+        <p>${quiz.description}</p>
+        <p style="color: #999; font-size: 0.9em; margin-top: 8px;">${quiz.questionCount} questions</p>
       `;
       card.addEventListener('click', () => startQuiz(quiz.id));
       quizList.appendChild(card);
     });
   } catch (error) {
     console.error('Error loading quizzes:', error);
-    quizList.innerHTML = '<p>Error loading quizzes. Please refresh the page.</p>';
+    quizList.innerHTML = '<p style="color: #d32f2f;">Error loading quizzes. Please refresh the page.</p>';
   }
 }
 
-// Start a quiz
 async function startQuiz(quizId) {
   try {
     const response = await fetch(`/api/quizzes/${quizId}`);
     currentQuiz = await response.json();
     currentAnswers = {};
     
-    // Switch to quiz screen
     showScreen(quizScreen);
     
-    // Render questions
     document.getElementById('quizTitle').textContent = currentQuiz.title;
     renderQuestions();
   } catch (error) {
@@ -60,7 +54,6 @@ async function startQuiz(quizId) {
   }
 }
 
-// Render quiz questions
 function renderQuestions() {
   questionsContainer.innerHTML = '';
   
@@ -76,34 +69,46 @@ function renderQuestions() {
     optionsDiv.className = 'options';
     
     question.options.forEach((option, optionIndex) => {
-      const optionLabel = document.createElement('label');
-      optionLabel.className = 'option';
+      const optionDiv = document.createElement('div');
+      optionDiv.className = 'option';
       
       const radio = document.createElement('input');
       radio.type = 'radio';
       radio.name = `question-${question.id}`;
       radio.value = optionIndex;
+      radio.id = `option-${question.id}-${optionIndex}`;
       radio.addEventListener('change', () => {
         currentAnswers[question.id] = optionIndex;
+        updateProgress();
       });
       
-      optionLabel.appendChild(radio);
-      optionLabel.appendChild(document.createTextNode(option));
-      optionsDiv.appendChild(optionLabel);
+      const label = document.createElement('label');
+      label.htmlFor = `option-${question.id}-${optionIndex}`;
+      label.textContent = option;
+      
+      optionDiv.appendChild(radio);
+      optionDiv.appendChild(label);
+      optionsDiv.appendChild(optionDiv);
     });
     
     questionDiv.appendChild(optionsDiv);
     questionsContainer.appendChild(questionDiv);
   });
   
-  // Update progress text
-  document.getElementById('progressText').textContent = 
-    `${currentQuiz.questions.length} questions`;
+  updateProgress();
 }
 
-// Submit quiz
+function updateProgress() {
+  const answered = Object.keys(currentAnswers).length;
+  const total = currentQuiz.questions.length;
+  const percentage = (answered / total) * 100;
+  
+  document.getElementById('progressText').textContent = 
+    `Progress: ${answered} of ${total} questions answered`;
+  document.getElementById('progressFill').style.width = percentage + '%';
+}
+
 async function submitQuiz() {
-  // Check if all questions are answered
   if (Object.keys(currentAnswers).length !== currentQuiz.questions.length) {
     alert('Please answer all questions before submitting.');
     return;
@@ -126,16 +131,13 @@ async function submitQuiz() {
   }
 }
 
-// Show results
 function showResults(results) {
   showScreen(resultsScreen);
   
-  // Display score
   document.getElementById('scorePercentage').textContent = `${results.percentage}%`;
   document.getElementById('scoreText').textContent = 
-    `You scored ${results.score} out of ${results.totalQuestions}`;
+    `You scored ${results.score} out of ${results.totalQuestions} (${results.percentage}%)`;
   
-  // Display detailed results
   const detailedDiv = document.getElementById('detailedResults');
   detailedDiv.innerHTML = '<div class="detailed-results">';
   
@@ -144,11 +146,14 @@ function showResults(results) {
     const resultDiv = document.createElement('div');
     resultDiv.className = `result-item ${result.isCorrect ? 'correct' : 'incorrect'}`;
     
+    const statusClass = result.isCorrect ? 'correct-status' : 'incorrect-status';
+    const statusText = result.isCorrect ? '✓ Correct' : '✗ Incorrect';
+    
     resultDiv.innerHTML = `
-      <p><span class="label">Question:</span> ${question.question}</p>
-      <p><span class="label">Your Answer:</span> ${question.options[result.userAnswer]}</p>
-      <p><span class="label">Correct Answer:</span> ${question.options[result.correctAnswer]}</p>
-      <p><span class="label">Status:</span> ${result.isCorrect ? '✓ Correct' : '✗ Incorrect'}</p>
+      <p><span class="label">Q:</span> ${question.question}</p>
+      <p><span class="label">Your answer:</span> ${question.options[result.userAnswer]}</p>
+      ${!result.isCorrect ? `<p><span class="label">Correct answer:</span> ${question.options[result.correctAnswer]}</p>` : ''}
+      <p class="status ${statusClass}">${statusText}</p>
     `;
     
     detailedDiv.appendChild(resultDiv);
@@ -157,13 +162,11 @@ function showResults(results) {
   detailedDiv.innerHTML += '</div>';
 }
 
-// Screen navigation
 function showScreen(screen) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   screen.classList.add('active');
 }
 
-// Event listeners
 submitBtn.addEventListener('click', submitQuiz);
 backBtn.addEventListener('click', () => showScreen(quizSelectionScreen));
 retakeBtn.addEventListener('click', () => startQuiz(currentQuiz.id));
