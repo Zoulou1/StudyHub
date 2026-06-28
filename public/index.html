@@ -3,58 +3,154 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>StudyHub - Learning Platform</title>
+  <title>StudyHub - Master Your Skills</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
-    <header>
-      <h1>StudyHub</h1>
-      <p>Test your knowledge on DevOps, Programming, and African Development</p>
-    </header>
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="logo">
+        <span class="logo-icon">📚</span>
+        <span class="logo-text">StudyHub</span>
+      </div>
+      <div class="nav-links">
+        <a href="#" class="nav-link active">Quizzes</a>
+        <a href="#" class="nav-link">About</a>
+      </div>
+    </div>
+  </nav>
 
-    <!-- Quiz Selection Screen -->
-    <div id="quizSelection" class="screen active">
-      <h2>Available Quizzes</h2>
-      <div id="quizList" class="quiz-list"></div>
+  <!-- Main Container -->
+  <div class="main-container">
+    <!-- Dashboard Screen -->
+    <div id="dashboardScreen" class="screen active">
+      <!-- Hero Section -->
+      <section class="hero">
+        <div class="hero-content">
+          <h1>Welcome to StudyHub</h1>
+          <p>Master DevOps, Programming, Cloud, and more with our comprehensive quiz platform</p>
+          <div class="hero-stats">
+            <div class="stat">
+              <span class="stat-number" id="totalQuizzes">8</span>
+              <span class="stat-label">Quizzes</span>
+            </div>
+            <div class="stat">
+              <span class="stat-number" id="totalQuestions">40</span>
+              <span class="stat-label">Questions</span>
+            </div>
+            <div class="stat">
+              <span class="stat-number">5</span>
+              <span class="stat-label">Categories</span>
+            </div>
+          </div>
+        </div>
+        <div class="hero-image">
+          <div class="floating-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Search and Filter Section -->
+      <section class="search-section">
+        <div class="search-container">
+          <input type="text" id="searchInput" class="search-box" placeholder="Search quizzes...">
+          <div class="filter-buttons">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="Programming">Programming</button>
+            <button class="filter-btn" data-filter="DevOps">DevOps</button>
+            <button class="filter-btn" data-filter="Cloud">Cloud</button>
+            <button class="filter-btn" data-filter="Security">Security</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Quizzes Grid -->
+      <section class="quizzes-section">
+        <h2 class="section-title">Available Quizzes</h2>
+        <div id="quizzesGrid" class="quizzes-grid"></div>
+      </section>
     </div>
 
     <!-- Quiz Taking Screen -->
     <div id="quizScreen" class="screen">
-      <div class="quiz-header">
-        <h2 id="quizTitle"></h2>
-        <p id="progressText"></p>
-        <div class="progress-bar">
-          <div id="progressFill" class="progress-fill"></div>
+      <div class="quiz-container">
+        <div class="quiz-header">
+          <button class="back-button" id="backFromQuiz">← Back</button>
+          <h2 id="quizTitle"></h2>
+          <div class="quiz-meta">
+            <span id="quizDifficulty" class="difficulty-badge"></span>
+          </div>
         </div>
-      </div>
-      <div id="questionsContainer"></div>
-      <div class="button-group">
-        <button id="submitBtn" class="btn btn-primary">Submit Quiz</button>
-        <button id="backBtn" class="btn btn-secondary">Back</button>
+
+        <div class="quiz-progress">
+          <div class="progress-info">
+            <span id="progressText"></span>
+          </div>
+          <div class="progress-bar">
+            <div id="progressFill" class="progress-fill"></div>
+          </div>
+        </div>
+
+        <div id="questionsContainer" class="questions-container"></div>
+
+        <div class="quiz-actions">
+          <button id="submitBtn" class="btn btn-primary">Submit Quiz</button>
+          <button id="backBtn" class="btn btn-secondary">Back to Quizzes</button>
+        </div>
       </div>
     </div>
 
     <!-- Results Screen -->
     <div id="resultsScreen" class="screen">
-      <h2>Your Results</h2>
-      <div class="score-card">
-        <div class="score-circle">
-          <span id="scorePercentage">0%</span>
+      <div class="results-container">
+        <button class="back-button" id="backFromResults">← Back</button>
+        
+        <div class="results-header">
+          <h2>Quiz Complete!</h2>
+          <p id="quizResultTitle"></p>
         </div>
-        <p id="scoreText"></p>
-      </div>
-      <div id="detailedResults"></div>
-      <div class="button-group">
-        <button id="retakeBtn" class="btn btn-primary">Retake Quiz</button>
-        <button id="backToListBtn" class="btn btn-secondary">Back to Quizzes</button>
+
+        <div class="score-section">
+          <div class="score-circle">
+            <div class="score-content">
+              <span id="scorePercentage" class="score-percentage">0%</span>
+              <span class="score-label">Score</span>
+            </div>
+          </div>
+          <p id="scoreText" class="score-text"></p>
+          <div class="score-breakdown">
+            <div class="breakdown-item">
+              <span class="breakdown-label">Correct Answers:</span>
+              <span id="correctCount" class="breakdown-value">0</span>
+            </div>
+            <div class="breakdown-item">
+              <span class="breakdown-label">Incorrect Answers:</span>
+              <span id="incorrectCount" class="breakdown-value">0</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="results-details">
+          <h3>Detailed Results</h3>
+          <div id="detailedResults" class="detailed-results"></div>
+        </div>
+
+        <div class="results-actions">
+          <button id="retakeBtn" class="btn btn-primary">Retake Quiz</button>
+          <button id="backToListBtn" class="btn btn-secondary">Back to Quizzes</button>
+        </div>
       </div>
     </div>
-
-    <footer>
-      <p>&copy; 2026 StudyHub. Created for African learners.</p>
-    </footer>
   </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>&copy; 2026 StudyHub. Empowering African learners with quality education.</p>
+  </footer>
 
   <script src="app.js"></script>
 </body>

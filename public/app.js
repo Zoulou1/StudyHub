@@ -1,41 +1,97 @@
 let currentQuiz = null;
 let currentAnswers = {};
+let allQuizzes = [];
 
-const quizSelectionScreen = document.getElementById('quizSelection');
+const dashboardScreen = document.getElementById('dashboardScreen');
 const quizScreen = document.getElementById('quizScreen');
 const resultsScreen = document.getElementById('resultsScreen');
-const quizList = document.getElementById('quizList');
+const quizzesGrid = document.getElementById('quizzesGrid');
 const questionsContainer = document.getElementById('questionsContainer');
 const submitBtn = document.getElementById('submitBtn');
 const backBtn = document.getElementById('backBtn');
+const backFromQuiz = document.getElementById('backFromQuiz');
+const backFromResults = document.getElementById('backFromResults');
 const retakeBtn = document.getElementById('retakeBtn');
 const backToListBtn = document.getElementById('backToListBtn');
+const searchInput = document.getElementById('searchInput');
+const filterButtons = document.querySelectorAll('.filter-btn');
+
+let currentFilter = 'all';
 
 document.addEventListener('DOMContentLoaded', () => {
   loadQuizzes();
+  setupEventListeners();
 });
+
+function setupEventListeners() {
+  searchInput.addEventListener('input', filterQuizzes);
+  filterButtons.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      filterButtons.forEach(b => b.classList.remove('active'));
+      e.target.classList.add('active');
+      currentFilter = e.target.dataset.filter;
+      filterQuizzes();
+    });
+  });
+}
 
 async function loadQuizzes() {
   try {
     const response = await fetch('/api/quizzes');
-    const quizzes = await response.json();
-    
-    quizList.innerHTML = '';
-    quizzes.forEach(quiz => {
-      const card = document.createElement('div');
-      card.className = 'quiz-card';
-      card.innerHTML = `
-        <h3>${quiz.title}</h3>
-        <p>${quiz.description}</p>
-        <p style="color: #999; font-size: 0.9em; margin-top: 8px;">${quiz.questionCount} questions</p>
-      `;
-      card.addEventListener('click', () => startQuiz(quiz.id));
-      quizList.appendChild(card);
-    });
+    allQuizzes = await response.json();
+    renderQuizzes(allQuizzes);
   } catch (error) {
     console.error('Error loading quizzes:', error);
-    quizList.innerHTML = '<p style="color: #d32f2f;">Error loading quizzes. Please refresh the page.</p>';
+    quizzesGrid.innerHTML = '<p style="color: #d32f2f;">Error loading quizzes. Please refresh the page.</p>';
   }
+}
+
+function renderQuizzes(quizzes) {
+  quizzesGrid.innerHTML = '';
+  
+  if (quizzes.length === 0) {
+    quizzesGrid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #999;">No quizzes found.</p>';
+    return;
+  }
+
+  quizzes.forEach(quiz => {
+    const card = document.createElement('div');
+    card.className = 'quiz-card';
+    card.innerHTML = `
+      <div class="quiz-card-header">
+        <span class="quiz-icon">${quiz.icon}</span>
+        <span class="difficulty-badge ${quiz.difficulty}">${quiz.difficulty}</span>
+      </div>
+      <h3>${quiz.title}</h3>
+      <p>${quiz.description}</p>
+      <div class="quiz-card-footer">
+        <span class="quiz-category">${quiz.category}</span>
+        <span class="quiz-questions">${quiz.questionCount} questions</span>
+      </div>
+    `;
+    card.addEventListener('click', () => startQuiz(quiz.id));
+    quizzesGrid.appendChild(card);
+  });
+}
+
+function filterQuizzes() {
+  const searchTerm = searchInput.value.toLowerCase();
+  
+  let filtered = allQuizzes;
+  
+  if (currentFilter !== 'all') {
+    filtered = filtered.filter(q => q.category === currentFilter);
+  }
+  
+  if (searchTerm) {
+    filtered = filtered.filter(q => 
+      q.title.toLowerCase().includes(searchTerm) ||
+      q.description.toLowerCase().includes(searchTerm) ||
+      q.category.toLowerCase().includes(searchTerm)
+    );
+  }
+  
+  renderQuizzes(filtered);
 }
 
 async function startQuiz(quizId) {
@@ -47,6 +103,9 @@ async function startQuiz(quizId) {
     showScreen(quizScreen);
     
     document.getElementById('quizTitle').textContent = currentQuiz.title;
+    document.getElementById('quizDifficulty').textContent = currentQuiz.difficulty;
+    document.getElementById('quizDifficulty').className = `difficulty-badge ${currentQuiz.difficulty}`;
+    
     renderQuestions();
   } catch (error) {
     console.error('Error loading quiz:', error);
@@ -104,7 +163,7 @@ function updateProgress() {
   const percentage = (answered / total) * 100;
   
   document.getElementById('progressText').textContent = 
-    `Progress: ${answered} of ${total} questions answered`;
+    `Question ${answered} of ${total}`;
   document.getElementById('progressFill').style.width = percentage + '%';
 }
 
@@ -134,12 +193,17 @@ async function submitQuiz() {
 function showResults(results) {
   showScreen(resultsScreen);
   
+  const incorrect = results.totalQuestions - results.score;
+  
+  document.getElementById('quizResultTitle').textContent = currentQuiz.title;
   document.getElementById('scorePercentage').textContent = `${results.percentage}%`;
   document.getElementById('scoreText').textContent = 
-    `You scored ${results.score} out of ${results.totalQuestions} (${results.percentage}%)`;
+    `Great job! You scored ${results.score} out of ${results.totalQuestions}`;
+  document.getElementById('correctCount').textContent = results.score;
+  document.getElementById('incorrectCount').textContent = incorrect;
   
   const detailedDiv = document.getElementById('detailedResults');
-  detailedDiv.innerHTML = '<div class="detailed-results">';
+  detailedDiv.innerHTML = '';
   
   results.results.forEach((result, index) => {
     const question = currentQuiz.questions[index];
@@ -149,25 +213,32 @@ function showResults(results) {
     const statusClass = result.isCorrect ? 'correct-status' : 'incorrect-status';
     const statusText = result.isCorrect ? '✓ Correct' : '✗ Incorrect';
     
-    resultDiv.innerHTML = `
-      <p><span class="label">Q:</span> ${question.question}</p>
+    let resultHTML = `
+      <p><span class="label">Question:</span> ${question.question}</p>
       <p><span class="label">Your answer:</span> ${question.options[result.userAnswer]}</p>
-      ${!result.isCorrect ? `<p><span class="label">Correct answer:</span> ${question.options[result.correctAnswer]}</p>` : ''}
-      <p class="status ${statusClass}">${statusText}</p>
     `;
     
+    if (!result.isCorrect) {
+      resultHTML += `<p><span class="label">Correct answer:</span> ${question.options[result.correctAnswer]}</p>`;
+    }
+    
+    resultHTML += `<p class="status ${statusClass}">${statusText}</p>`;
+    
+    resultDiv.innerHTML = resultHTML;
     detailedDiv.appendChild(resultDiv);
   });
-  
-  detailedDiv.innerHTML += '</div>';
 }
 
 function showScreen(screen) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   screen.classList.add('active');
+  window.scrollTo(0, 0);
 }
 
+// Event listeners
 submitBtn.addEventListener('click', submitQuiz);
-backBtn.addEventListener('click', () => showScreen(quizSelectionScreen));
+backBtn.addEventListener('click', () => showScreen(dashboardScreen));
+backFromQuiz.addEventListener('click', () => showScreen(dashboardScreen));
+backFromResults.addEventListener('click', () => showScreen(dashboardScreen));
 retakeBtn.addEventListener('click', () => startQuiz(currentQuiz.id));
-backToListBtn.addEventListener('click', () => showScreen(quizSelectionScreen));
+backToListBtn.addEventListener('click', () => showScreen(dashboardScreen));

@@ -11,12 +11,15 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static('public'));
 
-// Quiz data with university-level content
+// Quiz data with expanded content
 const quizzes = [
   {
     id: 1,
     title: 'DevOps Fundamentals',
-    description: 'Test your knowledge on core DevOps principles and practices',
+    category: 'DevOps',
+    icon: '⚙️',
+    difficulty: 'Intermediate',
+    description: 'Master the core principles and practices of DevOps',
     questions: [
       {
         id: 1,
@@ -78,7 +81,10 @@ const quizzes = [
   {
     id: 2,
     title: 'Programming Concepts',
-    description: 'Assess your understanding of fundamental programming principles',
+    category: 'Programming',
+    icon: '💻',
+    difficulty: 'Intermediate',
+    description: 'Test your understanding of fundamental programming principles',
     questions: [
       {
         id: 1,
@@ -140,7 +146,10 @@ const quizzes = [
   {
     id: 3,
     title: 'African Economics & Development',
-    description: 'Questions about African economic trends, fintech, and development',
+    category: 'Economics',
+    icon: '🌍',
+    difficulty: 'Beginner',
+    description: 'Explore African economic trends, fintech, and development',
     questions: [
       {
         id: 1,
@@ -202,6 +211,9 @@ const quizzes = [
   {
     id: 4,
     title: 'Cloud & Deployment',
+    category: 'Cloud',
+    icon: '☁️',
+    difficulty: 'Intermediate',
     description: 'Understanding cloud platforms, deployment strategies, and scaling',
     questions: [
       {
@@ -260,6 +272,266 @@ const quizzes = [
         correctAnswer: 0
       }
     ]
+  },
+  {
+    id: 5,
+    title: 'JavaScript Essentials',
+    category: 'Programming',
+    icon: '🔶',
+    difficulty: 'Beginner',
+    description: 'Core JavaScript concepts and best practices',
+    questions: [
+      {
+        id: 1,
+        question: 'What is the difference between var, let, and const?',
+        options: [
+          'They are all the same',
+          'let and const are block-scoped, var is function-scoped; const cannot be reassigned',
+          'var is the newest standard',
+          'const is for constants only'
+        ],
+        correctAnswer: 1
+      },
+      {
+        id: 2,
+        question: 'What does the spread operator (...) do in JavaScript?',
+        options: [
+          'Multiplies numbers',
+          'Spreads array elements or object properties',
+          'Creates a new function',
+          'Deletes array elements'
+        ],
+        correctAnswer: 1
+      },
+      {
+        id: 3,
+        question: 'What is a closure in JavaScript?',
+        options: [
+          'A function that ends the program',
+          'A function that has access to variables from its outer scope',
+          'A way to close a file',
+          'A type of loop'
+        ],
+        correctAnswer: 1
+      },
+      {
+        id: 4,
+        question: 'What is the difference between == and ===?',
+        options: [
+          'They are the same',
+          '== compares values, === compares values and types',
+          '=== is faster',
+          'There is no difference in modern JavaScript'
+        ],
+        correctAnswer: 1
+      },
+      {
+        id: 5,
+        question: 'What does async/await do?',
+        options: [
+          'Makes code run faster',
+          'Allows you to write asynchronous code in a synchronous style',
+          'Replaces promises completely',
+          'Stops code execution'
+        ],
+        correctAnswer: 1
+      }
+    ]
+  },
+  {
+    id: 6,
+    title: 'Database & SQL',
+    category: 'Databases',
+    icon: '🗄️',
+    difficulty: 'Intermediate',
+    description: 'SQL queries, database design, and optimization',
+    questions: [
+      {
+        id: 1,
+        question: 'What does ACID stand for in database transactions?',
+        options: [
+          'Atomicity, Consistency, Isolation, Durability',
+          'Authentication, Confidentiality, Integrity, Data',
+          'Availability, Consistency, Isolation, Deployment',
+          'Automatic, Consistent, Integrated, Distributed'
+        ],
+        correctAnswer: 0
+      },
+      {
+        id: 2,
+        question: 'What is a primary key in a database?',
+        options: [
+          'A password for the database',
+          'A unique identifier for each record in a table',
+          'The first column in a table',
+          'A key used for encryption'
+        ],
+        correctAnswer: 1
+      },
+      {
+        id: 3,
+        question: 'What is database normalization?',
+        options: [
+          'Making all data the same format',
+          'Organizing data to reduce redundancy and improve data integrity',
+          'Backing up the database',
+          'Deleting old records'
+        ],
+        correctAnswer: 1
+      },
+      {
+        id: 4,
+        question: 'What is the difference between INNER JOIN and LEFT JOIN?',
+        options: [
+          'They are the same',
+          'INNER JOIN returns only matching records, LEFT JOIN returns all records from the left table',
+          'LEFT JOIN is faster',
+          'INNER JOIN is deprecated'
+        ],
+        correctAnswer: 1
+      },
+      {
+        id: 5,
+        question: 'What is an index in a database?',
+        options: [
+          'A list of all tables',
+          'A data structure that improves query performance',
+          'A backup of the database',
+          'A type of table'
+        ],
+        correctAnswer: 1
+      }
+    ]
+  },
+  {
+    id: 7,
+    title: 'Web Security',
+    category: 'Security',
+    icon: '🔒',
+    difficulty: 'Intermediate',
+    description: 'Common vulnerabilities, authentication, and secure coding practices',
+    questions: [
+      {
+        id: 1,
+        question: 'What is SQL injection?',
+        options: [
+          'A type of vaccine',
+          'An attack where malicious SQL code is inserted into input fields',
+          'A database backup method',
+          'A programming language'
+        ],
+        correctAnswer: 1
+      },
+      {
+        id: 2,
+        question: 'What does HTTPS provide that HTTP does not?',
+        options: [
+          'Faster speed',
+          'Encryption and secure data transmission',
+          'More storage',
+          'Better compatibility'
+        ],
+        correctAnswer: 1
+      },
+      {
+        id: 3,
+        question: 'What is a Cross-Site Scripting (XSS) attack?',
+        options: [
+          'A type of database error',
+          'An attack where malicious scripts are injected into web pages',
+          'A programming technique',
+          'A network protocol'
+        ],
+        correctAnswer: 1
+      },
+      {
+        id: 4,
+        question: 'What is the purpose of a firewall?',
+        options: [
+          'To make the internet faster',
+          'To monitor and control incoming and outgoing network traffic',
+          'To store data',
+          'To encrypt passwords'
+        ],
+        correctAnswer: 1
+      },
+      {
+        id: 5,
+        question: 'What is two-factor authentication (2FA)?',
+        options: [
+          'Using two passwords',
+          'A security method requiring two forms of verification',
+          'Two different browsers',
+          'Logging in twice'
+        ],
+        correctAnswer: 1
+      }
+    ]
+  },
+  {
+    id: 8,
+    title: 'System Design & Architecture',
+    category: 'Architecture',
+    icon: '🏗️',
+    difficulty: 'Advanced',
+    description: 'Scalability, system design patterns, and architectural decisions',
+    questions: [
+      {
+        id: 1,
+        question: 'What is horizontal scaling?',
+        options: [
+          'Making a server more powerful',
+          'Adding more servers to distribute the load',
+          'Reducing the number of users',
+          'Changing the database'
+        ],
+        correctAnswer: 1
+      },
+      {
+        id: 2,
+        question: 'What is a load balancer?',
+        options: [
+          'A device that balances weight',
+          'A system that distributes network traffic across multiple servers',
+          'A type of database',
+          'A programming language'
+        ],
+        correctAnswer: 1
+      },
+      {
+        id: 3,
+        question: 'What is caching and why is it important?',
+        options: [
+          'A type of virus',
+          'Storing frequently accessed data in fast memory to improve performance',
+          'A backup method',
+          'A security feature'
+        ],
+        correctAnswer: 1
+      },
+      {
+        id: 4,
+        question: 'What is the CAP theorem?',
+        options: [
+          'A hat for servers',
+          'Consistency, Availability, Partition tolerance - a distributed system can guarantee only two',
+          'A type of database',
+          'A programming pattern'
+        ],
+        correctAnswer: 1
+      },
+      {
+        id: 5,
+        question: 'What is eventual consistency?',
+        options: [
+          'The database will eventually break',
+          'In distributed systems, all nodes will eventually have the same data',
+          'Data is always consistent',
+          'A type of encryption'
+        ],
+        correctAnswer: 1
+      }
+    ]
   }
 ];
 
@@ -270,6 +542,9 @@ app.get('/api/quizzes', (req, res) => {
   const quizList = quizzes.map(quiz => ({
     id: quiz.id,
     title: quiz.title,
+    category: quiz.category,
+    icon: quiz.icon,
+    difficulty: quiz.difficulty,
     description: quiz.description,
     questionCount: quiz.questions.length
   }));
